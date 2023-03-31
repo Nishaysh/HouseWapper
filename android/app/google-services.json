@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "606616450115",
+    "project_id": "housesware",
+    "storage_bucket": "housesware.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606616450115:android:a552dfc28ae7b890d350f6",
+        "android_client_info": {
+          "package_name": "com.example.property_swap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606616450115-n1i7nuscs0rpfb5qfhr7pe1rll1li85i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI7ZuAn4RvIn62kooqerfbp5GX_gToejo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606616450115-n1i7nuscs0rpfb5qfhr7pe1rll1li85i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

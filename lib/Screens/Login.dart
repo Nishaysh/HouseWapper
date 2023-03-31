@@ -1,5 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:property_swap/Screens/Profile.dart';
+import 'package:property_swap/firebase/Resource/Auth_Methods.dart';
+import 'package:property_swap/firebase/utils/utils.dart';
 import 'SignUp.dart';
 
 import 'package:get/get.dart';
@@ -12,6 +15,38 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  final AuthMethods _authMethods = AuthMethods();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
+  void LoginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await _authMethods.loginUser(
+        email: _emailController.text, password: _passwordController.text);
+    setState(() {
+      _isLoading = false;
+    });
+    if (res == "success") {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => Profile(),
+        ),
+      );
+    } else {
+      showSnackBar(res, context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double W = MediaQuery.of(context).size.width;
@@ -69,6 +104,7 @@ class _LoginState extends State<Login> {
                         ],
                       ),
                       child: TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           hintText: 'Email',
                           suffixIcon: const Icon(
@@ -103,6 +139,7 @@ class _LoginState extends State<Login> {
                         ],
                       ),
                       child: TextField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           hintText: 'Password',
                           suffixIcon: const Icon(
@@ -150,13 +187,16 @@ class _LoginState extends State<Login> {
                           color: Colors.blue[900],
                           boxShadow: const [],
                         ),
-                        child: const Center(
-                          child: Text(
-                            'Sign In',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                        child: InkWell(
+                          onTap: LoginUser,
+                          child: const Center(
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
