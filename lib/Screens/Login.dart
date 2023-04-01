@@ -213,13 +213,19 @@ class _LoginState extends State<Login> {
                               color: Colors.black),
                           children: [
                             TextSpan(
-                                text: ' Register',
-                                style: const TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Get.to(() => SignUp())),
+                              text: ' Register',
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap =
+                                    () => Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) => SignUp(),
+                                          ),
+                                        ),
+                            ),
                           ],
                         ),
                       ),
