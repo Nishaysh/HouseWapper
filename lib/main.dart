@@ -1,13 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:property_swap/Screens/Login.dart';
 import 'package:property_swap/Screens/Profile.dart';
-import 'package:property_swap/Screens/SignUp.dart';
 import 'package:property_swap/firebase/Provider/user_provider.dart';
+import 'package:property_swap/firebase/Resource/storage_methods.dart';
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
@@ -16,9 +14,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MaterialApp(
-    home: MyApp(),
-  ));
+  runApp(
+    MaterialApp(
+      home: test(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +41,9 @@ class MyApp extends StatelessWidget {
               // Checking if the snapshot has any data or not
               if (snapshot.hasData) {
                 // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-                return const Profile();
+                return Profile(
+                  uid: FirebaseAuth.instance.currentUser!.uid,
+                );
               } else if (snapshot.hasError) {
                 return Center(
                   child: CircularProgressIndicator(),
@@ -58,6 +60,63 @@ class MyApp extends StatelessWidget {
 
             return const Login();
           },
+        ),
+      ),
+    );
+  }
+}
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Checkbox List Example',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: Scaffold(
+//         appBar: AppBar(
+//           title: Text('Checkbox List Example'),
+//         ),
+//         body: Center(
+//           child: AddressWidget(),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class test extends StatefulWidget {
+  const test({super.key});
+
+  @override
+  State<test> createState() => _testState();
+}
+
+class _testState extends State<test> {
+  StorageMehtods storageMehtods = StorageMehtods();
+  void store() {
+    storageMehtods.storePropertyForm(
+      pId: 'pId',
+      address: 'address',
+      propertyType: 'propertyType',
+      qualities: ['test', 'test2'],
+      description: 'description',
+      uid: 'uid',
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: store,
+          child: Text('store'),
         ),
       ),
     );

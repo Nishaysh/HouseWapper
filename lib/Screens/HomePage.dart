@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'Matches.dart';
@@ -15,7 +16,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List pages = [
-    const Profile(),
+    Profile(
+      uid: FirebaseAuth.instance.currentUser!.uid,
+    ),
     const Liked(),
     const MatchesPage(),
     const SearchPage(),

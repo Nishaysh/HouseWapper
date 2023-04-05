@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>606616450115-d47128p007jb2t813s0npm1b9tkajamn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.606616450115-d47128p007jb2t813s0npm1b9tkajamn</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBbhLyZwyt0iZSdDNr8SI9nX_1n1MMgrh8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>606616450115</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.propertySwap</string>
+	<key>PROJECT_ID</key>
+	<string>housesware</string>
+	<key>STORAGE_BUCKET</key>
+	<string>housesware.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:606616450115:ios:9940bb7d89bec73ed350f6</string>
+</dict>
+</plist>

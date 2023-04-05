@@ -1,11 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:property_swap/Screens/Profile.dart';
 import 'package:property_swap/firebase/Resource/Auth_Methods.dart';
 import 'package:property_swap/firebase/utils/utils.dart';
 import 'SignUp.dart';
-
-import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -39,7 +38,9 @@ class _LoginState extends State<Login> {
     if (res == "success") {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => Profile(),
+          builder: (context) => Profile(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          ),
         ),
       );
     } else {

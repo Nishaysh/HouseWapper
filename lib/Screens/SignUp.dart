@@ -1,14 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:flutter/foundation.dart';
 import 'package:property_swap/Screens/Loading.dart';
+import 'package:property_swap/Screens/Matches.dart';
 import 'package:property_swap/Screens/Profile.dart';
+import 'package:property_swap/Screens/YourProperty.dart';
 import 'package:property_swap/firebase/Resource/Auth_Methods.dart';
 import 'package:property_swap/firebase/utils/utils.dart';
-
 import 'Login.dart';
-import 'YourProperty.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -50,9 +49,7 @@ class _SignUpState extends State<SignUp> {
       showSnackBar(res, context);
     } else {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => Profile(),
-        ),
+        MaterialPageRoute(builder: (context) => YourProperty()),
       );
     }
     return res;
