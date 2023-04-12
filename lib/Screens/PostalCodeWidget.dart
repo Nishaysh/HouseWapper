@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 
+String address = '';
+
 class AddressWidget extends StatefulWidget {
+  const AddressWidget({
+    super.key,
+  });
+
   @override
   _AddressWidgetState createState() => _AddressWidgetState();
+
+  static _AddressWidgetState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_AddressWidgetState>();
 }
 
 class _AddressWidgetState extends State<AddressWidget> {
   final _postalCodeController = TextEditingController();
+  final _houseNumberController = TextEditingController();
+
   final _addressController = TextEditingController();
-  late String _address;
+
+  String getAddress() {
+    return _addressController.text;
+  }
 
   Future<void> _getAddressFromPostalCode(String postalCode) async {
     try {
@@ -20,7 +34,7 @@ class _AddressWidgetState extends State<AddressWidget> {
           locations.first.longitude,
         );
         Placemark placemark = placemarks.first;
-        _address = placemark.street.toString() +
+        address = _houseNumberController.text +
             ', ' +
             placemark.subLocality.toString() +
             ', ' +
@@ -30,7 +44,7 @@ class _AddressWidgetState extends State<AddressWidget> {
             ', ' +
             placemark.country.toString();
         setState(() {
-          _addressController.text = _address;
+          _addressController.text = address;
         });
       } else {
         setState(() {
@@ -56,6 +70,14 @@ class _AddressWidgetState extends State<AddressWidget> {
           ),
         ),
         SizedBox(height: 16),
+        TextFormField(
+          controller: _houseNumberController,
+          decoration: InputDecoration(
+            labelText: 'House number',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
             _getAddressFromPostalCode(_postalCodeController.text);
@@ -64,6 +86,29 @@ class _AddressWidgetState extends State<AddressWidget> {
         ),
         SizedBox(height: 16),
         Text(_addressController.text),
+      ],
+    );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AddressWidget(),
+        SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
+            // Create an instance of AddressWidget
+            AddressWidget addressWidget = AddressWidget();
+            // Call the getAddress method on the instance
+            String address = AddressWidget.of(context)!.getAddress();
+            // Do something with the address
+            print(address);
+          },
+          child: Text('Get Address'),
+        ),
       ],
     );
   }

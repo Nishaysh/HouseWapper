@@ -2,21 +2,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:property_swap/Screens/Login.dart';
+import 'package:property_swap/Screens/Messaging.dart';
+import 'package:property_swap/Screens/PostalCodeWidget.dart';
 import 'package:property_swap/Screens/Profile.dart';
+import 'package:property_swap/Screens/SignUp.dart';
+import 'package:property_swap/Screens/YourProperty.dart';
 import 'package:property_swap/firebase/Provider/user_provider.dart';
 import 'package:property_swap/firebase/Resource/storage_methods.dart';
+import 'package:property_swap/firebase/chat/homepage.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+      //options: DefaultFirebaseOptions.currentPlatform,
+      );
 
   runApp(
     MaterialApp(
-      home: test(),
+      home: SignUp(),
     ),
   );
 }
@@ -66,59 +71,36 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// void main() {
-//   runApp(MyApp());
+// class test extends StatefulWidget {
+//   const test({super.key});
+
+//   @override
+//   State<test> createState() => _testState();
 // }
 
-// class MyApp extends StatelessWidget {
+// class _testState extends State<test> {
+//   StorageMehtods storageMehtods = StorageMehtods();
+//   void store() {
+//     print(address + "test");
+//     storageMehtods.storePropertyForm(
+//       pId: 'pId',
+//       address: 'address',
+//       propertyType: 'propertyType',
+//       qualities: ['test', 'test2'],
+//       description: 'description',
+//       uid: 'uid',
+//     );
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Checkbox List Example',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('Checkbox List Example'),
-//         ),
-//         body: Center(
-//           child: AddressWidget(),
+//     return Scaffold(
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: store,
+//           child: Text('store'),
 //         ),
 //       ),
 //     );
 //   }
 // }
-
-class test extends StatefulWidget {
-  const test({super.key});
-
-  @override
-  State<test> createState() => _testState();
-}
-
-class _testState extends State<test> {
-  StorageMehtods storageMehtods = StorageMehtods();
-  void store() {
-    storageMehtods.storePropertyForm(
-      pId: 'pId',
-      address: 'address',
-      propertyType: 'propertyType',
-      qualities: ['test', 'test2'],
-      description: 'description',
-      uid: 'uid',
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: store,
-          child: Text('store'),
-        ),
-      ),
-    );
-  }
-}

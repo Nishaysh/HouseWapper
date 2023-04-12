@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "606616450115",
-    "project_id": "housesware",
-    "storage_bucket": "housesware.appspot.com"
+    "project_number": "14504729652",
+    "project_id": "safyan-56ecc",
+    "storage_bucket": "safyan-56ecc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:606616450115:android:a552dfc28ae7b890d350f6",
+        "mobilesdk_app_id": "1:14504729652:android:dbc164b48e6e32878dbe61",
         "android_client_info": {
           "package_name": "com.example.property_swap"
         }
       },
       "oauth_client": [
         {
-          "client_id": "606616450115-n1i7nuscs0rpfb5qfhr7pe1rll1li85i.apps.googleusercontent.com",
+          "client_id": "14504729652-v2eics7m83609nit4pia7qp8q4plansn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAI7ZuAn4RvIn62kooqerfbp5GX_gToejo"
+          "current_key": "AIzaSyD1euopLjzS7zDqQuat3i471zl7ntG9Wu8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "606616450115-n1i7nuscs0rpfb5qfhr7pe1rll1li85i.apps.googleusercontent.com",
+              "client_id": "14504729652-v2eics7m83609nit4pia7qp8q4plansn.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "606616450115-d47128p007jb2t813s0npm1b9tkajamn.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.propertySwap"
-              }
             }
           ]
         }

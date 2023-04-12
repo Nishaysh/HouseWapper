@@ -22,7 +22,10 @@ class _HomePageState extends State<HomePage> {
     const Liked(),
     const MatchesPage(),
     const SearchPage(),
-    const Messaging(),
+    // ChatScreen(
+    //   receiverId: 'yIkRpAze0FhdVrtytPwHXoGiv6N2',
+    //   senderId: 'IC4d9cFCi8a0yr8HfjVSNyUv8742',
+    // ),
   ];
   int currentIndex = 0;
   void onTap(int index) {

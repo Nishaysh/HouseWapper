@@ -44,40 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBsF_sk6ZFPiI7WUv2ggNIAfVBdYC-9Ngg',
-    appId: '1:606616450115:web:bf479ac4397dfcfbd350f6',
-    messagingSenderId: '606616450115',
-    projectId: 'housesware',
-    authDomain: 'housesware.firebaseapp.com',
-    storageBucket: 'housesware.appspot.com',
-    measurementId: 'G-RFYPRB74ZJ',
+    apiKey: 'AIzaSyCM6QMcMEj8UkTWE_fhR34T3eA2CvADF6M',
+    appId: '1:14504729652:web:2aead8568119cfde8dbe61',
+    messagingSenderId: '14504729652',
+    projectId: 'safyan-56ecc',
+    authDomain: 'safyan-56ecc.firebaseapp.com',
+    storageBucket: 'safyan-56ecc.appspot.com',
+    measurementId: 'G-8LK06HPGBH',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAI7ZuAn4RvIn62kooqerfbp5GX_gToejo',
-    appId: '1:606616450115:android:a552dfc28ae7b890d350f6',
-    messagingSenderId: '606616450115',
-    projectId: 'housesware',
-    storageBucket: 'housesware.appspot.com',
+    apiKey: 'AIzaSyD1euopLjzS7zDqQuat3i471zl7ntG9Wu8',
+    appId: '1:14504729652:android:dbc164b48e6e32878dbe61',
+    messagingSenderId: '14504729652',
+    projectId: 'safyan-56ecc',
+    storageBucket: 'safyan-56ecc.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBbhLyZwyt0iZSdDNr8SI9nX_1n1MMgrh8',
-    appId: '1:606616450115:ios:9940bb7d89bec73ed350f6',
-    messagingSenderId: '606616450115',
-    projectId: 'housesware',
-    storageBucket: 'housesware.appspot.com',
-    iosClientId: '606616450115-d47128p007jb2t813s0npm1b9tkajamn.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCRVaxy26rW65_Jt2XpzKZ92n2hepQPSEM',
+    appId: '1:14504729652:ios:c1d0d25aa09411e28dbe61',
+    messagingSenderId: '14504729652',
+    projectId: 'safyan-56ecc',
+    storageBucket: 'safyan-56ecc.appspot.com',
+    iosClientId: '14504729652-3m1g8sm5j55h8e3si8e4vc7sk8rbkdv5.apps.googleusercontent.com',
     iosBundleId: 'com.example.propertySwap',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBbhLyZwyt0iZSdDNr8SI9nX_1n1MMgrh8',
-    appId: '1:606616450115:ios:9940bb7d89bec73ed350f6',
-    messagingSenderId: '606616450115',
-    projectId: 'housesware',
-    storageBucket: 'housesware.appspot.com',
-    iosClientId: '606616450115-d47128p007jb2t813s0npm1b9tkajamn.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCRVaxy26rW65_Jt2XpzKZ92n2hepQPSEM',
+    appId: '1:14504729652:ios:c1d0d25aa09411e28dbe61',
+    messagingSenderId: '14504729652',
+    projectId: 'safyan-56ecc',
+    storageBucket: 'safyan-56ecc.appspot.com',
+    iosClientId: '14504729652-3m1g8sm5j55h8e3si8e4vc7sk8rbkdv5.apps.googleusercontent.com',
     iosBundleId: 'com.example.propertySwap',
   );
 }

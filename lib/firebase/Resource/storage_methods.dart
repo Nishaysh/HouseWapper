@@ -11,15 +11,6 @@ class StorageMehtods {
 
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<String> uploadImagetoStorage(String childName, Uint8List file) async {
-    Reference ref =
-        _storage.ref().child(childName).child(_auth.currentUser!.uid);
-
-    UploadTask uploadTask = ref.putData(file);
-    TaskSnapshot snap = await uploadTask;
-    String downloadURL = await snap.ref.getDownloadURL();
-    return downloadURL;
-  }
 
   Future<String> storePropertyForm({
     required String pId,
@@ -28,6 +19,7 @@ class StorageMehtods {
     required List<String> qualities,
     required String description,
     required String uid,
+    required String landLord,
   }) async {
     String res = "Some error Occurred";
     String postId = const Uuid().v1();
@@ -36,7 +28,8 @@ class StorageMehtods {
       if (address.isNotEmpty ||
           propertyType.isNotEmpty ||
           qualities.isNotEmpty ||
-          description.isNotEmpty) {
+          description.isNotEmpty ||
+          landLord.isNotEmpty) {
         PropertyModel _prop = PropertyModel(
           pId: pId,
           address: address,
@@ -44,6 +37,7 @@ class StorageMehtods {
           qualities: qualities,
           description: description,
           uid: uid,
+          landLord: landLord,
         );
 
         // adding user in our database

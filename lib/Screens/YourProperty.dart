@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:property_swap/firebase/Resource/storage_methods.dart';
+import 'package:uuid/uuid.dart';
 import 'MultiStepForm.dart';
 import 'PostalCodeWidget.dart';
+
+String description = '';
 
 class YourProperty extends StatefulWidget {
   const YourProperty({Key? key}) : super(key: key);
@@ -13,27 +17,11 @@ class YourProperty extends StatefulWidget {
 class _MyPropertyState extends State<YourProperty> {
   List Choice = ['House', 'Flate/Maisonate', 'Banglow'];
   int ChoiceIndex = 0;
-
-  List Fetures = [
-    'Double Glaz',
-    'Gardon',
-    'Drive Way',
-    'Conservatory',
-    'Balcony',
-    ' Single Garage',
-    ' Double Garage',
-    ' Gas Central Hearing',
-    'Electric Heating',
-    ' Oil Heating ',
-    'Private Gardon',
-    ' Communal Garden',
-    ' Fast Internet',
-    ' Disable/Mobility Adapted'
-  ];
   int FeturesIndex = 0;
-
+  String propertyType = '';
   bool isSelected = false;
   int _activeStepIndex = 0;
+  final _descriptionController = TextEditingController();
 
   List<Step> stepList() => [
         Step(
@@ -60,6 +48,8 @@ class _MyPropertyState extends State<YourProperty> {
                   selectedColor: Colors.red[100],
                   onSelected: (value) {
                     setState(() {
+                      propertyType = value ? Choice[Index] : "";
+
                       ChoiceIndex = value ? Index : 0;
                     });
                   },
@@ -70,7 +60,9 @@ class _MyPropertyState extends State<YourProperty> {
           ),
         ),
         Step(
-          title: Text('Checkboxes'),
+          state: _activeStepIndex <= 2 ? StepState.editing : StepState.complete,
+          isActive: _activeStepIndex >= 2,
+          title: Text('Rent and feature'),
           content: SizedBox(
             height: 200, // or some other fixed height
             child: CheckboxListWidget(),
@@ -99,6 +91,7 @@ class _MyPropertyState extends State<YourProperty> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: TextFormField(
+                    controller: _descriptionController,
                     maxLines: 5,
                     keyboardType: TextInputType.multiline,
                     decoration: const InputDecoration(
@@ -111,7 +104,30 @@ class _MyPropertyState extends State<YourProperty> {
             ),
           ),
         ),
+        Step(
+          state: _activeStepIndex <= 2 ? StepState.editing : StepState.complete,
+          isActive: _activeStepIndex >= 2,
+          title: Text('Select your landLord'),
+          content: SizedBox(
+            height: 200, // or some other fixed height
+            child: LandLordsList(),
+          ),
+        ),
       ];
+  StorageMehtods storageMehtods = StorageMehtods();
+
+  void storePropertyForm() {
+    String uniqueId = Uuid().v4();
+    storageMehtods.storePropertyForm(
+      pId: uniqueId,
+      address: address,
+      propertyType: propertyType,
+      qualities: _checkedItems,
+      description: _descriptionController.text,
+      uid: FirebaseAuth.instance.currentUser!.uid,
+      landLord: selectedItem,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,30 +150,35 @@ class _MyPropertyState extends State<YourProperty> {
                 ),
               ),
               SizedBox(height: H * 0.01),
-              Stepper(
-                type: StepperType.vertical,
-                currentStep: _activeStepIndex,
-                steps: stepList(),
-                onStepContinue: () {
-                  final isLastStep = _activeStepIndex == stepList().length - 1;
-                  if (isLastStep) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MultiStepForm()));
-                  } else if (_activeStepIndex < (stepList().length - 1)) {
-                    _activeStepIndex += 1;
-                  }
-                  setState(() {});
-                },
-                onStepTapped: (Step) => setState(() => _activeStepIndex = Step),
-                onStepCancel: () {
-                  if (_activeStepIndex == 0) {
-                    return;
-                  }
-                  _activeStepIndex -= 1;
-                  setState(() {});
-                },
+              SingleChildScrollView(
+                child: Stepper(
+                  type: StepperType.vertical,
+                  currentStep: _activeStepIndex,
+                  steps: stepList(),
+                  onStepContinue: () {
+                    final isLastStep =
+                        _activeStepIndex == stepList().length - 1;
+                    if (isLastStep) {
+                      storePropertyForm();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MultiStepForm()));
+                    } else if (_activeStepIndex < (stepList().length - 1)) {
+                      _activeStepIndex += 1;
+                    }
+                    setState(() {});
+                  },
+                  onStepTapped: (Step) =>
+                      setState(() => _activeStepIndex = Step),
+                  onStepCancel: () {
+                    if (_activeStepIndex == 0) {
+                      return;
+                    }
+                    _activeStepIndex -= 1;
+                    setState(() {});
+                  },
+                ),
               ),
             ],
           ),
@@ -169,6 +190,8 @@ class _MyPropertyState extends State<YourProperty> {
 
 //This is the list of the check boxe items:
 
+List<String> _checkedItems = [];
+
 class CheckboxListWidget extends StatefulWidget {
   CheckboxListWidget({Key? key}) : super(key: key);
 
@@ -177,7 +200,6 @@ class CheckboxListWidget extends StatefulWidget {
 }
 
 class _CheckboxListWidgetState extends State<CheckboxListWidget> {
-  List<String> _checkedItems = [];
   final List<String> _itemsList = [
     'Double Glaz',
     'Gardon',
@@ -215,6 +237,132 @@ class _CheckboxListWidgetState extends State<CheckboxListWidget> {
           },
         );
       },
+    );
+  }
+}
+
+String selectedItem = '';
+
+class LandLordsList extends StatefulWidget {
+  LandLordsList();
+
+  @override
+  _LandLordsListState createState() => _LandLordsListState();
+}
+
+class _LandLordsListState extends State<LandLordsList> {
+  final List<String> _allItemsList = [
+    'Apple',
+    'Banana',
+    'Cherry',
+    'Date',
+    'Fig',
+    'Grapes',
+    'Kiwi',
+    'Lemon',
+    'Mango',
+    'Orange',
+    'Peach',
+    'Plum',
+    'Raspberry',
+    'Strawberry',
+    'Watermelon',
+  ];
+
+  List<String> _filteredItemsList = [];
+
+  void _onItemSelect(String item) {
+    setState(() {
+      selectedItem = item;
+    });
+  }
+
+  void _onSearchTextChanged(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredItemsList = List.from(_allItemsList);
+      } else {
+        _filteredItemsList = _allItemsList
+            .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: _onSearchTextChanged,
+              decoration: InputDecoration(
+                labelText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              child: ListView.builder(
+                itemCount: _filteredItemsList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final item = _filteredItemsList[index];
+                  return ListTile(
+                    title: Text(item),
+                    onTap: () => _onItemSelect(item),
+                    tileColor: selectedItem == item ? Colors.blue : null,
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Step getStep() {
+    return Step(
+      title: Text('Select Item'),
+      content: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: _onSearchTextChanged,
+              decoration: InputDecoration(
+                labelText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredItemsList.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = _filteredItemsList[index];
+                return ListTile(
+                  title: Text(item),
+                  onTap: () => _onItemSelect(item),
+                  tileColor: selectedItem == item ? Colors.blue : null,
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Selected Item: $selectedItem',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
