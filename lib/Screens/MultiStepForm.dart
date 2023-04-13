@@ -6,14 +6,14 @@ import 'package:get/get_core/src/get_main.dart';
 
 import 'HomePage.dart';
 
-class MultiStepForm extends StatefulWidget {
-  const MultiStepForm({Key? key}) : super(key: key);
+class RequirementForm extends StatefulWidget {
+  const RequirementForm({Key? key}) : super(key: key);
 
   @override
-  State<MultiStepForm> createState() => _MultiStepFormState();
+  State<RequirementForm> createState() => _RequirementFormState();
 }
 
-class _MultiStepFormState extends State<MultiStepForm> {
+class _RequirementFormState extends State<RequirementForm> {
   int _activeStepIndex = 0;
 
   List<Step> stepList() => [

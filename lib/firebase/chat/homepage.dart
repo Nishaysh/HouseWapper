@@ -27,27 +27,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.indigo.shade400,
-      appBar: AppBar(
-        backgroundColor: Colors.indigo.shade400,
-        title: Text('Flash Chat'),
-        elevation: 0,
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    open == true ? open = false : open = true;
-                  });
-                },
-                icon: Icon(
-                  open == true ? Icons.close_rounded : Icons.search_rounded,
-                  size: 30,
-                )),
-          )
-        ],
-      ),
       drawer: ChatWidgets.drawer(context),
       body: SafeArea(
         child: Stack(

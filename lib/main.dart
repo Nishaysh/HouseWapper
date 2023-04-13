@@ -1,27 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:property_swap/Screens/HomePage.dart';
 import 'package:property_swap/Screens/Login.dart';
-import 'package:property_swap/Screens/Messaging.dart';
-import 'package:property_swap/Screens/PostalCodeWidget.dart';
 import 'package:property_swap/Screens/Profile.dart';
-import 'package:property_swap/Screens/SignUp.dart';
-import 'package:property_swap/Screens/YourProperty.dart';
 import 'package:property_swap/firebase/Provider/user_provider.dart';
-import 'package:property_swap/firebase/Resource/storage_methods.dart';
-import 'package:property_swap/firebase/chat/homepage.dart';
+
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      //options: DefaultFirebaseOptions.currentPlatform,
-      );
+  await Firebase.initializeApp();
 
   runApp(
     MaterialApp(
-      home: SignUp(),
+      home: MyApp(),
     ),
   );
 }
@@ -46,9 +39,10 @@ class MyApp extends StatelessWidget {
               // Checking if the snapshot has any data or not
               if (snapshot.hasData) {
                 // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-                return Profile(
-                  uid: FirebaseAuth.instance.currentUser!.uid,
-                );
+                return HomePage();
+                // return Profile(
+                //   uid: FirebaseAuth.instance.currentUser!.uid,
+                // );
               } else if (snapshot.hasError) {
                 return Center(
                   child: CircularProgressIndicator(),
@@ -104,3 +98,4 @@ class MyApp extends StatelessWidget {
 //     );
 //   }
 // }
+
