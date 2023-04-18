@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:property_swap/Screens/HomePage.dart';
 import 'package:property_swap/Screens/Profile.dart';
 import 'package:property_swap/firebase/Resource/Auth_Methods.dart';
 import 'package:property_swap/firebase/utils/utils.dart';
@@ -37,11 +38,7 @@ class _LoginState extends State<Login> {
     });
     if (res == "success") {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => Profile(
-            uid: FirebaseAuth.instance.currentUser!.uid,
-          ),
-        ),
+        MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
       showSnackBar(res, context);

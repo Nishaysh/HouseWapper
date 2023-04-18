@@ -120,7 +120,7 @@ class _MyPropertyState extends State<YourProperty> {
     String uniqueId = Uuid().v4();
     storageMehtods.storePropertyForm(
       pId: uniqueId,
-      address: address,
+      address: formattedAddress,
       propertyType: propertyType,
       qualities: _checkedItems,
       description: _descriptionController.text,

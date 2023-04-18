@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 
-String address = '';
+String formattedAddress = '';
 
 class AddressWidget extends StatefulWidget {
   const AddressWidget({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   _AddressWidgetState createState() => _AddressWidgetState();
@@ -21,7 +21,7 @@ class _AddressWidgetState extends State<AddressWidget> {
 
   final _addressController = TextEditingController();
 
-  String getAddress() {
+  String getFormattedAddress() {
     return _addressController.text;
   }
 
@@ -34,17 +34,10 @@ class _AddressWidgetState extends State<AddressWidget> {
           locations.first.longitude,
         );
         Placemark placemark = placemarks.first;
-        address = _houseNumberController.text +
-            ', ' +
-            placemark.subLocality.toString() +
-            ', ' +
-            placemark.locality.toString() +
-            ', ' +
-            placemark.postalCode.toString() +
-            ', ' +
-            placemark.country.toString();
         setState(() {
-          _addressController.text = address;
+          formattedAddress =
+              '${_houseNumberController.text}, ${placemark.thoroughfare}, ${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}';
+          _addressController.text = formattedAddress;
         });
       } else {
         setState(() {
@@ -102,9 +95,9 @@ class MyWidget extends StatelessWidget {
           onPressed: () {
             // Create an instance of AddressWidget
             AddressWidget addressWidget = AddressWidget();
-            // Call the getAddress method on the instance
-            String address = AddressWidget.of(context)!.getAddress();
-            // Do something with the address
+            // Call the getFormattedAddress method on the instance
+            String address = AddressWidget.of(context)!.getFormattedAddress();
+            // Do something with the formatted address
             print(address);
           },
           child: Text('Get Address'),

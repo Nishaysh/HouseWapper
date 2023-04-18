@@ -26,8 +26,29 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.indigo.shade400,
+        title: Text('Messages'),
+        elevation: 0,
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    open == true ? open = false : open = true;
+                  });
+                },
+                icon: Icon(
+                  open == true ? Icons.close_rounded : Icons.search_rounded,
+                  size: 30,
+                )),
+          )
+        ],
+      ),
       backgroundColor: Colors.indigo.shade400,
-      drawer: ChatWidgets.drawer(context),
+      // drawer: ChatWidgets.drawer(context),
       body: SafeArea(
         child: Stack(
           alignment: AlignmentDirectional.topEnd,
