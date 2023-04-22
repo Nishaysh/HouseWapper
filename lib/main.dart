@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:property_swap/Screens/HomePage.dart';
 import 'package:property_swap/Screens/Login.dart';
-import 'package:property_swap/Screens/Profile.dart';
 import 'package:property_swap/Screens/YourProperty.dart';
 import 'package:property_swap/firebase/Provider/user_provider.dart';
 
@@ -15,7 +14,7 @@ void main() async {
 
   runApp(
     MaterialApp(
-      home: YourProperty(),
+      home: MyApp(),
     ),
   );
 }
@@ -66,37 +65,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// class test extends StatefulWidget {
-//   const test({super.key});
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
 
-//   @override
-//   State<test> createState() => _testState();
-// }
-
-// class _testState extends State<test> {
-//   StorageMehtods storageMehtods = StorageMehtods();
-//   void store() {
-//     print(address + "test");
-//     storageMehtods.storePropertyForm(
-//       pId: 'pId',
-//       address: 'address',
-//       propertyType: 'propertyType',
-//       qualities: ['test', 'test2'],
-//       description: 'description',
-//       uid: 'uid',
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: store,
-//           child: Text('store'),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(),
+    );
+  }
+}

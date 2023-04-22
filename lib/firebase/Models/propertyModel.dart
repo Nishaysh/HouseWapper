@@ -8,6 +8,7 @@ class PropertyModel {
   final String? description;
   final String? uid;
   final String? landLord;
+  final String? photoUrl;
 
   const PropertyModel({
     required this.pId,
@@ -17,6 +18,7 @@ class PropertyModel {
     required this.description,
     required this.uid,
     required this.landLord,
+    required this.photoUrl,
   });
 
   static PropertyModel fromSnap(DocumentSnapshot snap) {
@@ -30,6 +32,7 @@ class PropertyModel {
       description: snapshot["description"],
       uid: snapshot["uid"],
       landLord: snapshot["landlord"],
+      photoUrl: snapshot["photoUrl"],
     );
   }
 
@@ -41,5 +44,6 @@ class PropertyModel {
         "description": description,
         "uid": uid,
         "landlord": landLord,
+        "photoUrl": photoUrl,
       };
 }

@@ -1,9 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:property_swap/firebase/Resource/PropertyFormMethod.dart';
 import 'package:property_swap/firebase/Resource/storage_methods.dart';
+import 'package:property_swap/firebase/utils/utils.dart';
 import 'package:uuid/uuid.dart';
+import '../widgets/LandLordsListWidget.dart';
+import '../widgets/RentAndFeaturesWidget.dart';
 import 'MultiStepForm.dart';
-import 'PostalCodeWidget.dart';
+import '../widgets/PostalCodeWidget.dart';
+import 'package:image_picker/image_picker.dart';
 
 String description = '';
 
@@ -22,6 +28,47 @@ class _MyPropertyState extends State<YourProperty> {
   bool isSelected = false;
   int _activeStepIndex = 0;
   final _descriptionController = TextEditingController();
+  Uint8List? _image;
+
+  void selectImage() async {
+    List<int>? im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im as Uint8List?;
+    });
+  }
+
+  Future<List<int>?> pickImage(ImageSource source) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    try {
+      XFile? _file = await _imagePicker.pickImage(source: source);
+      if (_file != null) {
+        return await _file.readAsBytes();
+      } else {
+        showSnackBar('No image file selected', context);
+        return null;
+      }
+    } catch (e) {
+      showSnackBar('Error picking image: $e', context);
+      return null;
+    }
+  }
+
+  StorageMehtods storageMehtods = StorageMehtods();
+  Property _property = Property();
+  void storePropertyForm() {
+    String uniqueId = Uuid().v4();
+
+    _property.storePropertyForm(
+      pId: uniqueId,
+      address: formattedAddress,
+      propertyType: propertyType,
+      qualities: checkedItems,
+      description: _descriptionController.text,
+      uid: FirebaseAuth.instance.currentUser!.uid,
+      landLord: selectedItem,
+      file: _image!,
+    );
+  }
 
   List<Step> stepList() => [
         Step(
@@ -65,7 +112,7 @@ class _MyPropertyState extends State<YourProperty> {
           title: Text('Rent and feature'),
           content: SizedBox(
             height: 200, // or some other fixed height
-            child: CheckboxListWidget(),
+            child: RentAndFeatures(),
           ),
         ),
         Step(
@@ -114,20 +161,6 @@ class _MyPropertyState extends State<YourProperty> {
           ),
         ),
       ];
-  StorageMehtods storageMehtods = StorageMehtods();
-
-  void storePropertyForm() {
-    String uniqueId = Uuid().v4();
-    storageMehtods.storePropertyForm(
-      pId: uniqueId,
-      address: formattedAddress,
-      propertyType: propertyType,
-      qualities: _checkedItems,
-      description: _descriptionController.text,
-      uid: FirebaseAuth.instance.currentUser!.uid,
-      landLord: selectedItem,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +180,27 @@ class _MyPropertyState extends State<YourProperty> {
                   fontSize: 30,
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  // selectImage();
+                  selectImage();
+                },
+                child: Stack(
+                  children: [
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundImage: MemoryImage(_image!),
+                          )
+                        : const CircleAvatar(
+                            radius: 64,
+                            backgroundImage: AssetImage(
+                              'img/3.jpeg',
+                            ),
+                          ),
+                  ],
                 ),
               ),
               SizedBox(height: H * 0.01),
@@ -183,185 +237,6 @@ class _MyPropertyState extends State<YourProperty> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-//This is the list of the check boxe items:
-
-List<String> _checkedItems = [];
-
-class CheckboxListWidget extends StatefulWidget {
-  CheckboxListWidget({Key? key}) : super(key: key);
-
-  @override
-  _CheckboxListWidgetState createState() => _CheckboxListWidgetState();
-}
-
-class _CheckboxListWidgetState extends State<CheckboxListWidget> {
-  final List<String> _itemsList = [
-    'Double Glaz',
-    'Gardon',
-    'Drive Way',
-    'Conservatory',
-    'Balcony',
-    ' Single Garage',
-    ' Double Garage',
-    ' Gas Central Hearing',
-    'Electric Heating',
-    ' Oil Heating ',
-    'Private Gardon',
-    ' Communal Garden',
-    ' Fast Internet',
-    ' Disable/Mobility Adapted'
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _itemsList.length,
-      itemBuilder: (BuildContext context, int index) {
-        final item = _itemsList[index];
-        return CheckboxListTile(
-          title: Text(item),
-          value: _checkedItems.contains(item),
-          onChanged: (bool? isChecked) {
-            setState(() {
-              if (isChecked ?? false) {
-                _checkedItems.add(item);
-              } else {
-                _checkedItems.remove(item);
-              }
-            });
-          },
-        );
-      },
-    );
-  }
-}
-
-String selectedItem = '';
-
-class LandLordsList extends StatefulWidget {
-  LandLordsList();
-
-  @override
-  _LandLordsListState createState() => _LandLordsListState();
-}
-
-class _LandLordsListState extends State<LandLordsList> {
-  final List<String> _allItemsList = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Fig',
-    'Grapes',
-    'Kiwi',
-    'Lemon',
-    'Mango',
-    'Orange',
-    'Peach',
-    'Plum',
-    'Raspberry',
-    'Strawberry',
-    'Watermelon',
-  ];
-
-  List<String> _filteredItemsList = [];
-
-  void _onItemSelect(String item) {
-    setState(() {
-      selectedItem = item;
-    });
-  }
-
-  void _onSearchTextChanged(String query) {
-    setState(() {
-      if (query.isEmpty) {
-        _filteredItemsList = List.from(_allItemsList);
-      } else {
-        _filteredItemsList = _allItemsList
-            .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: _onSearchTextChanged,
-              decoration: InputDecoration(
-                labelText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              child: ListView.builder(
-                itemCount: _filteredItemsList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final item = _filteredItemsList[index];
-                  return ListTile(
-                    title: Text(item),
-                    onTap: () => _onItemSelect(item),
-                    tileColor: selectedItem == item ? Colors.blue : null,
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Step getStep() {
-    return Step(
-      title: Text('Select Item'),
-      content: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: _onSearchTextChanged,
-              decoration: InputDecoration(
-                labelText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredItemsList.length,
-              itemBuilder: (BuildContext context, int index) {
-                final item = _filteredItemsList[index];
-                return ListTile(
-                  title: Text(item),
-                  onTap: () => _onItemSelect(item),
-                  tileColor: selectedItem == item ? Colors.blue : null,
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Selected Item: $selectedItem',
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
-        ],
       ),
     );
   }

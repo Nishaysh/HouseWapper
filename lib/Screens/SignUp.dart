@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:property_swap/Screens/HomePage.dart';
-import 'package:property_swap/Screens/Loading.dart';
 import 'package:property_swap/Screens/YourProperty.dart';
 import 'package:property_swap/firebase/Resource/Auth_Methods.dart';
 import 'package:property_swap/firebase/utils/utils.dart';
+import '../widgets/Loading.dart';
 import 'Login.dart';
 
 class SignUp extends StatefulWidget {
@@ -59,7 +59,7 @@ class _SignUpState extends State<SignUp> {
     var H = MediaQuery.of(context).size.height;
 
     return _isLoading
-        ? Loading()
+        ? const Loading()
         : SafeArea(
             child: Scaffold(
               body: SingleChildScrollView(
