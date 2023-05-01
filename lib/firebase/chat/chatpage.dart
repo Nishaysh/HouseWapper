@@ -56,7 +56,9 @@ class _ChatPageState extends State<ChatPage> {
                         AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
                             snapshot) {
                       return !snapshot.hasData
-                          ? Container()
+                          ? Text(
+                              '',
+                            )
                           : Text(
                               'Last seen: ' +
                                   DateFormat('hh:mm a').format(

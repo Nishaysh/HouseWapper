@@ -1,74 +1,39 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import '../firebase/chat/chatpage.dart';
 
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-
-import '../firebase/Models/user.dart';
-import '../firebase/Provider/user_provider.dart';
-import '../firebase/utils/utils.dart';
-
-class PostCard extends StatefulWidget {
+class PropertyCard extends StatefulWidget {
   final snap;
-  const PostCard({
+  const PropertyCard({
     super.key,
     required this.snap,
   });
 
   @override
-  State<PostCard> createState() => _PostCardState();
+  State<PropertyCard> createState() => _PropertyCardState();
 }
 
-class _PostCardState extends State<PostCard> {
-  bool isLikeAnimating = false;
-  int commentLen = 0;
-  @override
-  void initState() {
-    super.initState();
-    getComment();
-  }
-
-  void getComment() async {
-    try {
-      QuerySnapshot snap = await FirebaseFirestore.instance
-          .collection("posts")
-          .doc(widget.snap['postId'])
-          .collection('comments')
-          .get();
-      commentLen = snap.docs.length;
-    } catch (e) {
-      showSnackBar(e.toString(), context);
-    }
-    setState(() {});
-  }
-
+class _PropertyCardState extends State<PropertyCard> {
   @override
   Widget build(BuildContext context) {
-    final UserModel? user = Provider.of<UserProvider>(context).getUser;
     return Container(
       color: Colors.white,
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 4,
               horizontal: 16,
             ).copyWith(right: 0),
             child: Row(
               children: [
-                CircleAvatar(
-                    radius: 16,
-                    backgroundImage: NetworkImage(
-                      widget.snap['profImage'],
-                    )),
+             const   Text(
+                  'Address',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 8,
                     ),
                     child: Column(
@@ -76,7 +41,8 @@ class _PostCardState extends State<PostCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.snap['username'],
+                          //..here
+                          widget.snap['address'],
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -96,9 +62,8 @@ class _PostCardState extends State<PostCard> {
                           children: ["Delete"]
                               .map(
                                 (e) => InkWell(
-                                  onTap: () {},
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
+                                    padding:const EdgeInsets.symmetric(
                                       vertical: 12,
                                       horizontal: 16,
                                     ),
@@ -111,7 +76,7 @@ class _PostCardState extends State<PostCard> {
                       ),
                     );
                   },
-                  icon: Icon(
+                  icon:const Icon(
                     Icons.more_vert,
                   ),
                 ),
@@ -119,11 +84,6 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           GestureDetector(
-            onDoubleTap: () async {
-              setState(() {
-                isLikeAnimating = true;
-              });
-            },
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -131,31 +91,12 @@ class _PostCardState extends State<PostCard> {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    widget.snap['postUrl'],
+                    widget.snap['photoUrl'],
                     fit: BoxFit.cover,
                   ),
                 ),
               ],
             ),
-          ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.send,
-                ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                    icon: Icon(Icons.bookmark_border),
-                    onPressed: () {},
-                  ),
-                ),
-              ),
-            ],
           ),
           Container(
             padding: const EdgeInsets.symmetric(
@@ -170,62 +111,42 @@ class _PostCardState extends State<PostCard> {
                         fontWeight: FontWeight.w800,
                       ),
                   child: Text(
-                    '${widget.snap["likes"].length} likes',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    "Description: " + widget.snap['description'],
+                  style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.only(
+                  padding:const EdgeInsets.only(
                     top: 8,
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(color: Colors.white),
-                      children: [
-                        TextSpan(
-                          text: widget.snap['username'],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "   " + widget.snap['description'],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
                 InkWell(
                   onTap: () {},
                   child: Container(
-                    padding: EdgeInsets.symmetric(
+                    padding:const EdgeInsets.symmetric(
                       vertical: 4,
-                    ),
-                    child: Text(
-                      "view all $commentLen comments",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding:const EdgeInsets.symmetric(
                     vertical: 4,
                   ),
-                  child: Text(
-                    DateFormat.yMMMd().format(
-                      widget.snap['datePublished'].toDate(),
-                    ),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
+                  child: IconButton(
+                    icon: Icon(Icons.message_outlined),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ChatPage(
+                                id: widget.snap['uid'],
+                                name: 'username' //widget.snap['landlord'],
+                                );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],

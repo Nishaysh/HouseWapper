@@ -36,7 +36,7 @@ class Property {
           description: description,
           uid: uid,
           landLord: landLord,
-          photoUrl: 'ppotourl',
+          photoUrl: photoUrl,
         );
 
         // adding user in our database
