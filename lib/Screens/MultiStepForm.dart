@@ -1,8 +1,13 @@
 import 'dart:ffi';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:property_swap/firebase/Provider/user_provider.dart';
+import 'package:property_swap/firebase/Resource/requirement_form_methods.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import 'HomePage.dart';
 
@@ -15,6 +20,13 @@ class RequirementForm extends StatefulWidget {
 
 class _RequirementFormState extends State<RequirementForm> {
   int _activeStepIndex = 0;
+  final _locationController = TextEditingController();
+  final _propertyTypeController = TextEditingController();
+  final _minBedroonNumController = TextEditingController();
+  final _maxBedroonNumController = TextEditingController();
+  final _rentTypeController = TextEditingController();
+  final _rentAmountController = TextEditingController();
+  String uniqueId = Uuid().v4();
 
   List<Step> stepList() => [
         Step(
@@ -37,9 +49,10 @@ class _RequirementFormState extends State<RequirementForm> {
                     ),
                   ],
                 ),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.only(left: 20.0),
                   child: TextField(
+                    controller: _locationController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Area / Post Code',
@@ -72,9 +85,10 @@ class _RequirementFormState extends State<RequirementForm> {
                         ),
                       ],
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _propertyTypeController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Type Of Property',
@@ -109,9 +123,10 @@ class _RequirementFormState extends State<RequirementForm> {
                         ),
                       ],
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _minBedroonNumController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Min Bedrooms',
@@ -136,9 +151,10 @@ class _RequirementFormState extends State<RequirementForm> {
                         ),
                       ],
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _maxBedroonNumController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Max Bedrooms',
@@ -173,9 +189,10 @@ class _RequirementFormState extends State<RequirementForm> {
                         ),
                       ],
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _rentTypeController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Weekly, Monthly',
@@ -200,9 +217,10 @@ class _RequirementFormState extends State<RequirementForm> {
                         ),
                       ],
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 20.0),
                       child: TextField(
+                        controller: _rentAmountController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Amount',
@@ -218,8 +236,27 @@ class _RequirementFormState extends State<RequirementForm> {
         ),
       ];
 
+  //Logic to store form to firestore:
+
+  RequirementFormMethods _requirementFormMethods = RequirementFormMethods();
+
+  void storeRequirementForm() {
+    _requirementFormMethods.storeRequirementForm(
+      rId: uniqueId,
+      location: _locationController.text,
+      propertyType: _propertyTypeController.text,
+      minBedrooms: int.parse(_minBedroonNumController.text),
+      maxBedrooms: int.parse(_maxBedroonNumController.text),
+      uid: FirebaseAuth.instance.currentUser!.uid,
+      rentType: _rentTypeController.text,
+      rent: int.parse(_rentAmountController.text),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).getUser;
+
     double W = MediaQuery.of(context).size.width;
     double H = MediaQuery.of(context).size.height;
     return SafeArea(
@@ -248,8 +285,14 @@ class _RequirementFormState extends State<RequirementForm> {
                     final isLastStep =
                         _activeStepIndex == stepList().length - 1;
                     if (isLastStep) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                      storeRequirementForm();
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
                     } else if (_activeStepIndex < (stepList().length - 1)) {
                       _activeStepIndex += 1;
                     }

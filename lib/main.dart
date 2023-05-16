@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
               if (snapshot.hasData) {
                 // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
                 return const HomePage();
+                // return const HomePage();
                 // return HomePage();
                 // return Profile(
                 //   uid: FirebaseAuth.instance.currentUser!.uid,

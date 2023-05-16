@@ -54,7 +54,7 @@ class _MyPropertyState extends State<YourProperty> {
   }
 
   StorageMehtods storageMehtods = StorageMehtods();
-  Property _property = Property();
+  PropertyFormMethods _property = PropertyFormMethods();
   void storePropertyForm() {
     String uniqueId = Uuid().v4();
 

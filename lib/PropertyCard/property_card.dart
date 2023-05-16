@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../firebase/chat/chatpage.dart';
 
 class PropertyCard extends StatefulWidget {
-  final snap;
+  final  snap;
   const PropertyCard({
     super.key,
     required this.snap,
@@ -17,7 +18,7 @@ class _PropertyCardState extends State<PropertyCard> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           Container(
@@ -27,7 +28,7 @@ class _PropertyCardState extends State<PropertyCard> {
             ).copyWith(right: 0),
             child: Row(
               children: [
-             const   Text(
+                const Text(
                   'Address',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -63,7 +64,7 @@ class _PropertyCardState extends State<PropertyCard> {
                               .map(
                                 (e) => InkWell(
                                   child: Container(
-                                    padding:const EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                       vertical: 12,
                                       horizontal: 16,
                                     ),
@@ -76,7 +77,7 @@ class _PropertyCardState extends State<PropertyCard> {
                       ),
                     );
                   },
-                  icon:const Icon(
+                  icon: const Icon(
                     Icons.more_vert,
                   ),
                 ),
@@ -91,7 +92,7 @@ class _PropertyCardState extends State<PropertyCard> {
                   height: MediaQuery.of(context).size.height * 0.35,
                   width: double.infinity,
                   child: Image.network(
-                    widget.snap['photoUrl'],
+                    widget.snap['photoUrl']??'https://unsplash.com/photos/eWqOgJ-lfiI',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -112,25 +113,25 @@ class _PropertyCardState extends State<PropertyCard> {
                       ),
                   child: Text(
                     "Description: " + widget.snap['description'],
-                  style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
                 Container(
                   width: double.infinity,
-                  padding:const EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 8,
                   ),
                 ),
                 InkWell(
                   onTap: () {},
                   child: Container(
-                    padding:const EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 4,
                     ),
                   ),
                 ),
                 Container(
-                  padding:const EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 4,
                   ),
                   child: IconButton(

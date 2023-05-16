@@ -4,7 +4,7 @@ import 'package:property_swap/firebase/Resource/storage_methods.dart';
 import 'package:uuid/uuid.dart';
 import '../Models/propertyModel.dart';
 
-class Property {
+class PropertyFormMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<String> storePropertyForm({
