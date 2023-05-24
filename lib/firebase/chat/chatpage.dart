@@ -11,7 +11,8 @@ String name = '';
 class ChatPage extends StatefulWidget {
   final String id;
   final String name;
-  ChatPage({Key? key, required this.id, required this.name}) : super(key: key);
+  const ChatPage({Key? key, required this.id, required this.name})
+      : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -56,13 +57,11 @@ class _ChatPageState extends State<ChatPage> {
                         AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
                             snapshot) {
                       return !snapshot.hasData
-                          ? Text(
+                          ? const Text(
                               '',
                             )
                           : Text(
-                              'Last seen: ' +
-                                  DateFormat('hh:mm a').format(
-                                      snapshot.data!['date_time'].toDate()),
+                              'Last seen: ${DateFormat('hh:mm a').format(snapshot.data!['date_time'].toDate())}',
                               style: Styles.h1().copyWith(
                                   fontSize: 12,
                                   fontWeight: FontWeight.normal,
@@ -100,7 +99,7 @@ class _ChatPageState extends State<ChatPage> {
                         }
                         return data == null
                             ? Container(
-                                child: Center(),
+                                child: const Center(),
                               )
                             : StreamBuilder(
                                 stream: data.reference
@@ -128,12 +127,12 @@ class _ChatPageState extends State<ChatPage> {
                                         );
                                 });
                       } else {
-                        return Center(
+                        return const Center(
                           child: Text('No conversation found'),
                         );
                       }
                     } else {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }

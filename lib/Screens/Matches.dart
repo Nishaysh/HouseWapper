@@ -10,24 +10,24 @@ class MatchesPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('propertyForm')
-                .snapshots(),
-            builder: (context,
-                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-              if (ConnectionState == ConnectionState.waiting ||
-                  snapshot.data == null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) => PropertyCard(
-                  snap: snapshot.data!.docs[index].data(),
-                ),
+          stream:
+              FirebaseFirestore.instance.collection('propertyForm').snapshots(),
+          builder: (context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (ConnectionState == ConnectionState.waiting ||
+                snapshot.data == null) {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            }),
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) => PropertyCard(
+                snap: snapshot.data!.docs[index].data(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

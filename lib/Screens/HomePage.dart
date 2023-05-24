@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:property_swap/search/SearchPage.dart';
+import 'package:property_swap/search/serch.dart';
 import 'Matches.dart';
 import 'Messaging.dart';
 import 'Profile.dart';
 import 'Liked.dart';
-import 'SearchPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,8 +21,8 @@ class _HomePageState extends State<HomePage> {
     ),
     const Liked(),
     const MatchesPage(),
-    const SearchPage(),
-    Messaging(),
+    SearchScreen(),
+    const Messaging(),
   ];
   int currentIndex = 0;
   void onTap(int index) {

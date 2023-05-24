@@ -26,7 +26,7 @@ class _RequirementFormState extends State<RequirementForm> {
   final _maxBedroonNumController = TextEditingController();
   final _rentTypeController = TextEditingController();
   final _rentAmountController = TextEditingController();
-  String uniqueId = Uuid().v4();
+  String uniqueId = const Uuid().v4();
 
   List<Step> stepList() => [
         Step(
@@ -50,10 +50,10 @@ class _RequirementFormState extends State<RequirementForm> {
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   child: TextField(
                     controller: _locationController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Area / Post Code',
                     ),
@@ -86,10 +86,10 @@ class _RequirementFormState extends State<RequirementForm> {
                       ],
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _propertyTypeController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Type Of Property',
                         ),
@@ -124,10 +124,10 @@ class _RequirementFormState extends State<RequirementForm> {
                       ],
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _minBedroonNumController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Min Bedrooms',
                         ),
@@ -135,7 +135,7 @@ class _RequirementFormState extends State<RequirementForm> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
@@ -152,10 +152,10 @@ class _RequirementFormState extends State<RequirementForm> {
                       ],
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _maxBedroonNumController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Max Bedrooms',
                         ),
@@ -190,10 +190,10 @@ class _RequirementFormState extends State<RequirementForm> {
                       ],
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _rentTypeController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Weekly, Monthly',
                         ),
@@ -201,7 +201,7 @@ class _RequirementFormState extends State<RequirementForm> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
@@ -218,10 +218,10 @@ class _RequirementFormState extends State<RequirementForm> {
                       ],
                     ),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _rentAmountController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Amount',
                         ),
@@ -238,7 +238,8 @@ class _RequirementFormState extends State<RequirementForm> {
 
   //Logic to store form to firestore:
 
-  RequirementFormMethods _requirementFormMethods = RequirementFormMethods();
+  final RequirementFormMethods _requirementFormMethods =
+      RequirementFormMethods();
 
   void storeRequirementForm() {
     _requirementFormMethods.storeRequirementForm(
@@ -290,7 +291,7 @@ class _RequirementFormState extends State<RequirementForm> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomePage(),
+                          builder: (context) => const HomePage(),
                         ),
                       );
                     } else if (_activeStepIndex < (stepList().length - 1)) {
