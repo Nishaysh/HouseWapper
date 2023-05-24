@@ -1,225 +1,144 @@
 import 'package:flutter/material.dart';
+import 'package:property_swap/search/serch.dart';
+import 'package:property_swap/widgets/CityList.dart';
+import 'package:property_swap/widgets/prpType.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  int distance = 1;
-  int minRoom = 1;
-  int maxRoom = 1;
-  int minRent = 1;
-  int maxRent = 1;
+  int distance = 0;
+  int beds = 0;
+  int rent = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Slider Example'),
+        title: const Text('Search Property'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Distance: $distance',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            Slider(
-              min: 1,
-              max: 50,
-              value: distance.toDouble(),
-              onChanged: (double value) {
-                setState(() {
-                  distance = value.toInt();
-                });
-              },
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.bedroom_parent_outlined),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Bed Rooms',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Min: $minRoom',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                SizedBox(
-                  width: 130,
-                  child: Slider(
-                    min: 1,
-                    max: 10,
-                    value: minRoom.toDouble(),
-                    onChanged: (double value) {
-                      setState(() {
-                        minRoom = value.toInt();
-                      });
-                    },
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Text(
+              //   'Distance: $distance',
+              //   style: const TextStyle(fontSize: 16.0),
+              // ),
+              // Slider(
+              //   min: 0,
+              //   max: 50,
+              //   divisions: 5,
+              //   value: distance.toDouble(),
+              //   onChanged: (double value) {
+              //     setState(() {
+              //       distance = value.toInt();
+              //     });
+              //   },
+              // ),
+              // const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.bedroom_parent_outlined),
+                  const SizedBox(
+                    width: 5,
                   ),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  'Max: $maxRoom',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                SizedBox(
-                  width: 130,
-                  child: Slider(
-                    min: 1,
-                    max: 10,
-                    value: maxRoom.toDouble(),
-                    onChanged: (double value) {
-                      setState(() {
-                        maxRoom = value.toInt();
-                      });
-                    },
+                  Text(
+                    'Bed Rooms ${beds}',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: 150,
+                child: Slider(
+                  min: 0,
+                  max: 20,
+                  divisions: 20,
+                  value: beds.toDouble(),
+                  onChanged: (double value) {
+                    setState(() {
+                      beds = value.toInt();
+                    });
+                  },
                 ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.currency_pound),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Rent/Month',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Text(
-                  'Min: $minRent',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                SizedBox(
-                  width: 130,
-                  child: Slider(
-                    min: 1,
-                    max: 1000,
-                    value: minRent.toDouble(),
-                    onChanged: (double value) {
-                      setState(() {
-                        minRent = value.toInt();
-                      });
-                    },
+              ),
+              const SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.currency_pound),
+                  const SizedBox(
+                    width: 5,
                   ),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  'Max: $maxRent',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                SizedBox(
-                  width: 130,
-                  child: Slider(
-                    min: 1,
-                    max: 1000,
-                    value: maxRent.toDouble(),
-                    onChanged: (double value) {
-                      setState(() {
-                        maxRent = value.toInt();
-                      });
-                    },
+                  Text(
+                    'Rent/Month ($rent)',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Slider(
+                min: 0,
+                max: 5000,
+                divisions: 100,
+                value: rent.toDouble(),
+                onChanged: (double value) {
+                  setState(() {
+                    rent = value.toInt();
+                  });
+                },
+              ),
+              const SizedBox(height: 16.0),
+
+              SizedBox(
+                height: 160,
+                child: PropertyType(),
+              ),
+              const SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  'City',
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            SizedBox(
-              height: 160,
-              child: Features(),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              child: Text('Submit'),
-              onPressed: () {
-                print('Slider 1 Value: $distance');
-                print('Slider 2 Value: $minRoom');
-                print('Slider 3 Value: $maxRoom');
-                print('Slider 4 Value: $minRent');
-                print(features);
-              },
-            ),
-          ],
+              ),
+              const SizedBox(height: 5.0),
+
+              CityList(),
+              ElevatedButton(
+                child: const Text('Search'),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SearchedItems(
+                        city: city,
+                        beds: beds,
+                        rent: rent,
+                        propertyType: prpType,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-}
-
-List<String> features = [];
-
-class Features extends StatefulWidget {
-  Features({Key? key}) : super(key: key);
-
-  @override
-  _FeaturesState createState() => _FeaturesState();
-}
-
-class _FeaturesState extends State<Features> {
-  final List<String> _itemsList = [
-    'Double Glaz',
-    'Gardon',
-    'Drive Way',
-    'Conservatory',
-    'Balcony',
-    ' Single Garage',
-    ' Double Garage',
-    ' Gas Central Hearing',
-    'Electric Heating',
-    ' Oil Heating ',
-    'Private Gardon',
-    ' Communal Garden',
-    ' Fast Internet',
-    ' Disable/Mobility Adapted'
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _itemsList.length,
-      itemBuilder: (BuildContext context, int index) {
-        final item = _itemsList[index];
-        return CheckboxListTile(
-          title: Text(item),
-          value: features.contains(item),
-          onChanged: (bool? isChecked) {
-            setState(() {
-              if (isChecked ?? false) {
-                features.add(item);
-              } else {
-                features.remove(item);
-              }
-            });
-          },
-        );
-      },
     );
   }
 }

@@ -111,7 +111,7 @@ class _MyPropertyState extends State<YourProperty> {
           isActive: _activeStepIndex >= 2,
           title: Text('Rent and feature'),
           content: SizedBox(
-            height: 200, // or some other fixed height
+            height: 200,
             child: RentAndFeatures(),
           ),
         ),

@@ -4,7 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:property_swap/PropertyCard/property_card.dart';
 
 class SearchedItems extends StatefulWidget {
-  const SearchedItems({super.key});
+  final String city;
+  final int beds;
+  final int rent;
+  final String propertyType;
+  const SearchedItems({
+    super.key,
+    required this.city,
+    required this.beds,
+    required this.rent,
+    required this.propertyType,
+  });
 
   @override
   State<SearchedItems> createState() => _SearchedItemsState();
@@ -25,16 +35,17 @@ class _SearchedItemsState extends State<SearchedItems> {
         FirebaseFirestore.instance.collection('propertyForm');
 
     var query = collection
-        .where('distance', isEqualTo: 10)
-        .where('beds', isEqualTo: 2)
+        .where('city', isEqualTo: widget.city)
+        .where('beds', isEqualTo: widget.beds)
         .where(
           'rent',
-          isEqualTo: 100,
+          isEqualTo: widget.rent,
         )
         .where(
-      'qualities',
-      arrayContainsAny: ['Balcony', 'hello'],
-    ).snapshots();
+          'propertyType',
+          isEqualTo: widget.propertyType,
+        )
+        .snapshots();
 
     return query;
   }
@@ -70,7 +81,6 @@ class _SearchedItemsState extends State<SearchedItems> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               return PropertyCard(
-                // (snapshot.data! as dynamic).docs[index]['uid'],
                 snap: snapshot.data!.docs[index].data(),
               );
             },
