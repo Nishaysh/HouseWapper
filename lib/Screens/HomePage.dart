@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:property_swap/Screens/MultiStepForm.dart';
 import 'package:property_swap/search/SearchPage.dart';
 
+import '../firebase/utils/utils.dart';
 import 'Matches.dart';
 import 'Messaging.dart';
+import 'Profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,17 +17,61 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List pages = [
-    const RequirementForm(),
+  String city = '';
+  String propType = '';
+  int bednum = 0;
+  int rent = 0;
+  var userData = {};
+  List pages = [];
 
-    // Profile(
-    //   uid: FirebaseAuth.instance.currentUser!.uid,
-    // ),
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
-    const MatchesPage(),
-    const SearchScreen(),
-    const Messaging(),
-  ];
+  getData() async {
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('requirementForm')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      if (userSnap.docs.isNotEmpty) {
+        var documentData = userSnap.docs[0].data();
+
+        setState(() {
+          rent = documentData['rent'];
+          bednum = documentData['bedrooms'];
+          city = documentData['location'];
+          propType = documentData['propertyType'];
+          pages = [
+            Profile(
+              uid: FirebaseAuth.instance.currentUser!.uid,
+            ),
+            Container(),
+            MatchesPage(
+              city: city,
+              beds: bednum,
+              rent: 400,
+              propertyType: 'Banglow',
+            ),
+            const SearchScreen(),
+            const Messaging(),
+          ];
+        });
+      } else {
+        print('doc not found');
+      }
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+  }
+
+  var collection = FirebaseFirestore.instance
+      .collection('requirementForm')
+      .doc(FirebaseAuth.instance.currentUser!.uid);
+
   int currentIndex = 0;
   void onTap(int index) {
     setState(() {
@@ -33,6 +81,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print('rent-------------->' + rent.toString());
+
     return Scaffold(
       body: pages[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
