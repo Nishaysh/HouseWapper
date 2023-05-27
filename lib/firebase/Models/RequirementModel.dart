@@ -6,8 +6,7 @@ class RequirementModel {
 
   final String? location;
   final String? propertyType;
-  final int? minBedrooms;
-  final int? maxBedrooms;
+  final int? bedrooms;
   final String? rentType;
   final int? rent;
 
@@ -15,8 +14,7 @@ class RequirementModel {
     required this.rId,
     required this.location,
     required this.propertyType,
-    required this.minBedrooms,
-    required this.maxBedrooms,
+    required this.bedrooms,
     required this.uid,
     required this.rentType,
     required this.rent,
@@ -29,8 +27,7 @@ class RequirementModel {
       rId: snapshot["rId"],
       location: snapshot["location"],
       propertyType: snapshot["propertyType"],
-      minBedrooms: snapshot["minBedrooms"],
-      maxBedrooms: snapshot["maxBedrooms"],
+      bedrooms: snapshot["bedrooms"],
       uid: snapshot["uid"],
       rentType: snapshot["rentType"],
       rent: snapshot["rent"],
@@ -41,8 +38,7 @@ class RequirementModel {
         "rId": rId,
         "location": location,
         "propertyType": propertyType,
-        "minBedrooms": minBedrooms,
-        "maxBedrooms": maxBedrooms,
+        "bedrooms": bedrooms,
         "uid": uid,
         "rentType": rentType,
         "rent": rent,

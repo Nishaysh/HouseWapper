@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-String city = '';
+String cityForAdd = '';
 
-class CityList extends StatefulWidget {
-  CityList();
+class CityFormPostalcode extends StatefulWidget {
+  CityFormPostalcode();
 
   @override
-  _CityListState createState() => _CityListState();
+  _CityFormPostalcodeState createState() => _CityFormPostalcodeState();
 }
 
-class _CityListState extends State<CityList> {
+class _CityFormPostalcodeState extends State<CityFormPostalcode> {
   final List<String> _allItemsList = [
     'London',
     'Manchester',
@@ -26,13 +26,18 @@ class _CityListState extends State<CityList> {
     'Nottingham',
     'Southampton',
     'Oxford',
+    'York',
+    'Cambridge',
+    'Reading',
+    'Aberdeen',
+    'Swansea',
   ];
 
   List<String> _filteredItemsList = [];
 
   void _onItemSelect(String item) {
     setState(() {
-      city = item;
+      cityForAdd = item;
     });
   }
 
@@ -51,7 +56,7 @@ class _CityListState extends State<CityList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: 140,
       child: Column(
         children: [
           Padding(
@@ -59,7 +64,7 @@ class _CityListState extends State<CityList> {
             child: TextField(
               onChanged: _onSearchTextChanged,
               decoration: InputDecoration(
-                labelText: 'Search',
+                labelText: 'City',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
               ),
@@ -74,7 +79,7 @@ class _CityListState extends State<CityList> {
                   return ListTile(
                     title: Text(item),
                     onTap: () => _onItemSelect(item),
-                    tileColor: city == item ? Colors.blue : null,
+                    tileColor: cityForAdd == item ? Colors.blue : null,
                   );
                 },
               ),
@@ -109,7 +114,7 @@ class _CityListState extends State<CityList> {
                 return ListTile(
                   title: Text(item),
                   onTap: () => _onItemSelect(item),
-                  tileColor: city == item ? Colors.blue : null,
+                  tileColor: cityForAdd == item ? Colors.blue : null,
                 );
               },
             ),
@@ -117,7 +122,7 @@ class _CityListState extends State<CityList> {
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              'Selected Item: $city',
+              'Selected Item: $cityForAdd',
               style: TextStyle(fontSize: 16.0),
             ),
           ),

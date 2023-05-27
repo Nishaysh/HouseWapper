@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:property_swap/search/serch.dart';
-import 'package:property_swap/widgets/CityList.dart';
+import 'package:property_swap/widgets/CityListForSearch.dart';
 import 'package:property_swap/widgets/prpType.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -126,7 +126,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => SearchedItems(
-                        city: city,
+                        city: cityForSearching,
                         beds: beds,
                         rent: rent,
                         propertyType: prpType,

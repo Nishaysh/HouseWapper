@@ -1,11 +1,11 @@
-import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:property_swap/firebase/Provider/user_provider.dart';
 import 'package:property_swap/firebase/Resource/requirement_form_methods.dart';
+import 'package:property_swap/widgets/bedroom_widgets.dart';
+import 'package:property_swap/widgets/city_for_reqForm.dart';
+import 'package:property_swap/widgets/rentListForReqForm.dart';
+import 'package:property_swap/widgets/rentTypeWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,9 +19,11 @@ class RequirementForm extends StatefulWidget {
 }
 
 class _RequirementFormState extends State<RequirementForm> {
+  List Choice = ['House', 'Flate/Maisonate', 'Banglow'];
+  String propertyType = '';
+  int ChoiceIndex = 0;
+
   int _activeStepIndex = 0;
-  final _locationController = TextEditingController();
-  final _propertyTypeController = TextEditingController();
   final _minBedroonNumController = TextEditingController();
   final _maxBedroonNumController = TextEditingController();
   final _rentTypeController = TextEditingController();
@@ -33,35 +35,7 @@ class _RequirementFormState extends State<RequirementForm> {
           state: _activeStepIndex <= 0 ? StepState.editing : StepState.complete,
           isActive: _activeStepIndex >= 0,
           title: const Text('Location'),
-          content: Container(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10,
-                      spreadRadius: 0.7,
-                      offset: const Offset(1, 1),
-                      color: Colors.grey.withOpacity(0.5),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    controller: _locationController,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Area / Post Code',
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          content: CityListforReqForm(),
         ),
         Step(
           state: _activeStepIndex <= 1 ? StepState.editing : StepState.complete,
@@ -70,31 +44,25 @@ class _RequirementFormState extends State<RequirementForm> {
           content: Container(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 10,
-                          spreadRadius: 0.7,
-                          offset: const Offset(1, 1),
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _propertyTypeController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Type Of Property',
-                        ),
-                      ),
-                    ),
+                SizedBox(
+                  height: 150,
+                  child: ListView.builder(
+                    itemCount: Choice.length,
+                    itemBuilder: (BuildContext context, int Index) {
+                      return ChoiceChip(
+                        label: Text(Choice[Index]),
+                        selected: ChoiceIndex == Index,
+                        selectedColor: Colors.red[100],
+                        onSelected: (value) {
+                          setState(() {
+                            propertyType = value ? Choice[Index] : "";
+
+                            ChoiceIndex = value ? Index : 0;
+                          });
+                        },
+                        backgroundColor: Colors.blue[100],
+                      );
+                    },
                   ),
                 ),
               ],
@@ -109,58 +77,21 @@ class _RequirementFormState extends State<RequirementForm> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 10,
-                          spreadRadius: 0.7,
-                          offset: const Offset(1, 1),
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _minBedroonNumController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Min Bedrooms',
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Bed Rooms:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 10,
-                          spreadRadius: 0.7,
-                          offset: const Offset(1, 1),
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _maxBedroonNumController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Max Bedrooms',
-                        ),
+                      BedNumReqWidget(
+                        numbers: const [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ],
@@ -171,67 +102,81 @@ class _RequirementFormState extends State<RequirementForm> {
           state: _activeStepIndex <= 3 ? StepState.editing : StepState.complete,
           isActive: _activeStepIndex >= 3,
           title: const Text('Rent'),
-          content: Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 10,
-                          spreadRadius: 0.7,
-                          offset: const Offset(1, 1),
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _rentTypeController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Weekly, Monthly',
-                        ),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  const Text('Rent Type:'),
+                  const SizedBox(
+                    width: 110,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 10,
+                            spreadRadius: 0.7,
+                            offset: const Offset(1, 1),
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        ],
                       ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: RentTypeWidget(
+                            rentType: const ['Weekly', 'Monthly'],
+                          )),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 10,
-                          spreadRadius: 0.7,
-                          offset: const Offset(1, 1),
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        controller: _rentAmountController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Amount',
-                        ),
-                        keyboardType: TextInputType.number,
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Rent:'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 10,
+                            spreadRadius: 0.7,
+                            offset: const Offset(1, 1),
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        ],
                       ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: RentListReqFromWidget(
+                            numbers: const [
+                              0,
+                              50,
+                              100,
+                              150,
+                              200,
+                              250,
+                              300,
+                              350,
+                              400,
+                              450,
+                              500
+                            ],
+                          )),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
       ];
@@ -244,13 +189,15 @@ class _RequirementFormState extends State<RequirementForm> {
   void storeRequirementForm() {
     _requirementFormMethods.storeRequirementForm(
       rId: uniqueId,
-      location: _locationController.text,
-      propertyType: _propertyTypeController.text,
-      minBedrooms: int.parse(_minBedroonNumController.text),
-      maxBedrooms: int.parse(_maxBedroonNumController.text),
+      location: cityForReqForm,
+      propertyType: propertyType,
+      bedrooms: reqBedrooms,
+
+      // minBedrooms: 0,
+      // maxBedrooms: 0,
       uid: FirebaseAuth.instance.currentUser!.uid,
-      rentType: _rentTypeController.text,
-      rent: int.parse(_rentAmountController.text),
+      rentType: rentType,
+      rent: rentType == 'Weekly' ? rentForReqForm * 4 : rentForReqForm,
     );
   }
 

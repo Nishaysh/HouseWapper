@@ -55,19 +55,7 @@ class _SearchedItemsState extends State<SearchedItems> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: TextFormField(
-          controller: _searchController,
-          decoration: const InputDecoration(
-            labelText: 'Search for a user ...',
-          ),
-          onFieldSubmitted: (String _) {
-            setState(
-              () {
-                isShowUsers = true;
-              },
-            );
-          },
-        ),
+        title: Text('See Properties'),
       ),
       body: StreamBuilder(
         stream: getFilteredResults(),

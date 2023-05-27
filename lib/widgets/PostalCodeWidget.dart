@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:property_swap/widgets/city_address.dart';
 
 String formattedAddress = '';
 
@@ -36,7 +37,7 @@ class _AddressWidgetState extends State<AddressWidget> {
         Placemark placemark = placemarks.first;
         setState(() {
           formattedAddress =
-              '${_houseNumberController.text}, ${placemark.thoroughfare}, ${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}';
+              '${_houseNumberController.text}, ${placemark.thoroughfare}, ${cityForAdd} ${placemark.subAdministrativeArea}, ${placemark.administrativeArea}, ${placemark.country}';
           _addressController.text = formattedAddress;
         });
       } else {
@@ -71,6 +72,7 @@ class _AddressWidgetState extends State<AddressWidget> {
           ),
         ),
         SizedBox(height: 16),
+        CityFormPostalcode(),
         ElevatedButton(
           onPressed: () {
             _getAddressFromPostalCode(_postalCodeController.text);

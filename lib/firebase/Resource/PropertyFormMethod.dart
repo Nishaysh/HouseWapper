@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:property_swap/firebase/Resource/storage_methods.dart';
+import 'package:property_swap/widgets/CityListForSearch.dart';
+import 'package:property_swap/widgets/bedroom_widgets.dart';
+import 'package:property_swap/widgets/city_address.dart';
+import 'package:property_swap/widgets/rent_list.dart';
 import 'package:uuid/uuid.dart';
 import '../Models/propertyModel.dart';
 
@@ -16,6 +20,9 @@ class PropertyFormMethods {
     required String uid,
     required String landLord,
     required Uint8List file,
+    required int beds,
+    required int rents,
+    required String city,
   }) async {
     String res = "Some error Occurred";
     String postId = const Uuid().v1();
@@ -37,6 +44,9 @@ class PropertyFormMethods {
           uid: uid,
           landLord: landLord,
           photoUrl: photoUrl,
+          beds: beds,
+          rent: rents,
+          city: city,
         );
 
         // adding user in our database
@@ -50,8 +60,10 @@ class PropertyFormMethods {
         res = "Please enter all the fields";
       }
     } catch (err) {
+      print('eeee---> ' + err.toString());
       return err.toString();
     }
+    print("vvvvv----> " + res);
     return res;
   }
 }

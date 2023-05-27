@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:property_swap/Screens/YourProperty.dart';
+import 'package:property_swap/Screens/MultiStepForm.dart';
 import 'package:property_swap/search/SearchPage.dart';
-import 'package:property_swap/search/serch.dart';
+
 import 'Matches.dart';
 import 'Messaging.dart';
-import 'Profile.dart';
-import 'Liked.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,12 +14,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List pages = [
-    Profile(
-      uid: FirebaseAuth.instance.currentUser!.uid,
-    ),
-    const YourProperty(),
+    const RequirementForm(),
+
+    // Profile(
+    //   uid: FirebaseAuth.instance.currentUser!.uid,
+    // ),
+
     const MatchesPage(),
-    SearchScreen(),
+    const SearchScreen(),
     const Messaging(),
   ];
   int currentIndex = 0;

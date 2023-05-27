@@ -14,8 +14,7 @@ class RequirementFormMethods {
     required String uid,
     required String location,
     required String propertyType,
-    required int minBedrooms,
-    required int maxBedrooms,
+    required int bedrooms,
     required String rentType,
     required int rent,
   }) async {
@@ -28,8 +27,7 @@ class RequirementFormMethods {
             rId: rId,
             location: location,
             propertyType: propertyType,
-            minBedrooms: minBedrooms,
-            maxBedrooms: maxBedrooms,
+            bedrooms: bedrooms,
             uid: uid,
             rentType: rentType,
             rent: rent);

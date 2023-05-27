@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:property_swap/firebase/Resource/PropertyFormMethod.dart';
 import 'package:property_swap/firebase/Resource/storage_methods.dart';
 import 'package:property_swap/firebase/utils/utils.dart';
+import 'package:property_swap/widgets/bedroom_widgets.dart';
+import 'package:property_swap/widgets/city_address.dart';
+import 'package:property_swap/widgets/city_for_reqForm.dart';
+import 'package:property_swap/widgets/rent_list.dart';
 import 'package:uuid/uuid.dart';
 import '../widgets/LandLordsListWidget.dart';
 import '../widgets/RentAndFeaturesWidget.dart';
@@ -38,11 +42,11 @@ class _MyPropertyState extends State<YourProperty> {
   }
 
   Future<List<int>?> pickImage(ImageSource source) async {
-    final ImagePicker _imagePicker = ImagePicker();
+    final ImagePicker imagePicker = ImagePicker();
     try {
-      XFile? _file = await _imagePicker.pickImage(source: source);
-      if (_file != null) {
-        return await _file.readAsBytes();
+      XFile? file = await imagePicker.pickImage(source: source);
+      if (file != null) {
+        return await file.readAsBytes();
       } else {
         showSnackBar('No image file selected', context);
         return null;
@@ -54,9 +58,9 @@ class _MyPropertyState extends State<YourProperty> {
   }
 
   StorageMehtods storageMehtods = StorageMehtods();
-  PropertyFormMethods _property = PropertyFormMethods();
-  void storePropertyForm() {
-    String uniqueId = Uuid().v4();
+  final PropertyFormMethods _property = PropertyFormMethods();
+  storePropertyForm() {
+    String uniqueId = const Uuid().v4();
 
     _property.storePropertyForm(
       pId: uniqueId,
@@ -67,6 +71,9 @@ class _MyPropertyState extends State<YourProperty> {
       uid: FirebaseAuth.instance.currentUser!.uid,
       landLord: selectedItem,
       file: _image!,
+      beds: reqBedrooms,
+      city: cityForAdd,
+      rents: rent,
     );
   }
 
@@ -75,8 +82,8 @@ class _MyPropertyState extends State<YourProperty> {
           state: _activeStepIndex <= 0 ? StepState.editing : StepState.complete,
           isActive: _activeStepIndex >= 0,
           title: const Text('Your Address'),
-          content: Padding(
-            padding: const EdgeInsets.all(8.0),
+          content: const Padding(
+            padding: EdgeInsets.all(8.0),
             child: AddressWidget(),
           ),
         ),
@@ -84,32 +91,72 @@ class _MyPropertyState extends State<YourProperty> {
           state: _activeStepIndex <= 1 ? StepState.editing : StepState.complete,
           isActive: _activeStepIndex >= 1,
           title: const Text('Property Type & Bedrooms'),
-          content: Container(
-            height: 150,
-            child: ListView.builder(
-              itemCount: Choice.length,
-              itemBuilder: (BuildContext context, int Index) {
-                return ChoiceChip(
-                  label: Text(Choice[Index]),
-                  selected: ChoiceIndex == Index,
-                  selectedColor: Colors.red[100],
-                  onSelected: (value) {
-                    setState(() {
-                      propertyType = value ? Choice[Index] : "";
+          content: Column(
+            children: [
+              Column(
+                children: [
+                  SizedBox(
+                    height: 150,
+                    child: ListView.builder(
+                      itemCount: Choice.length,
+                      itemBuilder: (BuildContext context, int Index) {
+                        return ChoiceChip(
+                          label: Text(Choice[Index]),
+                          selected: ChoiceIndex == Index,
+                          selectedColor: Colors.red[100],
+                          onSelected: (value) {
+                            setState(() {
+                              propertyType = value ? Choice[Index] : "";
 
-                      ChoiceIndex = value ? Index : 0;
-                    });
-                  },
-                  backgroundColor: Colors.blue[100],
-                );
-              },
-            ),
+                              ChoiceIndex = value ? Index : 0;
+                            });
+                          },
+                          backgroundColor: Colors.blue[100],
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(border: Border.all()),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Bed Rooms:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        BedNumReqWidget(
+                          numbers: const [
+                            0,
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            6,
+                            7,
+                            8,
+                            9,
+                            10,
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Container()
+            ],
           ),
         ),
         Step(
           state: _activeStepIndex <= 2 ? StepState.editing : StepState.complete,
           isActive: _activeStepIndex >= 2,
-          title: Text('Rent and feature'),
+          title: const Text('Rent and feature'),
           content: SizedBox(
             height: 200,
             child: RentAndFeatures(),
@@ -154,7 +201,7 @@ class _MyPropertyState extends State<YourProperty> {
         Step(
           state: _activeStepIndex <= 2 ? StepState.editing : StepState.complete,
           isActive: _activeStepIndex >= 2,
-          title: Text('Select your landLord'),
+          title: const Text('Select your landLord'),
           content: SizedBox(
             height: 200, // or some other fixed height
             child: LandLordsList(),
@@ -217,7 +264,7 @@ class _MyPropertyState extends State<YourProperty> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RequirementForm()));
+                              builder: (context) => const RequirementForm()));
                     } else if (_activeStepIndex < (stepList().length - 1)) {
                       _activeStepIndex += 1;
                     }
